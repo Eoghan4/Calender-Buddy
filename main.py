@@ -1,3 +1,7 @@
+# Calender Buddy is not associated with Primark, Pennneys or any other company.
+# Created by Eoghan McGough
+
+
 import tkinter as tk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
