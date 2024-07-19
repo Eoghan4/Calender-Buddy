@@ -1,4 +1,4 @@
-# Calender Buddy is not associated with Primark, Pennneys or any other company.
+# Calendar Buddy is not associated with Primark, Pennneys or any other company.
 # Created by Eoghan McGough
 
 
@@ -8,6 +8,7 @@ from PIL import Image, ImageTk
 
 from get_time import get_time
 from read_excel import get_row, get_times
+from csv_tools import add_colleague, read_colleagues
 from logic import main
 
 
@@ -17,13 +18,14 @@ def on_button_click():
     text2 = textbox2.get()  # Get text from the second Entry widget
     #print(f"Textbox 1: {text1}")  # Print the content of the first textbox
     #print(f"Textbox 2: {text2}")  # Print the content of the second textbox
-    main(text2,text1)
+    add_colleague(text1,text2)
 
 def on_button2_click():
     text1 = textbox3.get()  # Get text from the first Entry widget  # Get text from the second Entry widget
     #print(f"Textbox 1: {text1}")  # Print the content of the first textbox
     #print(f"Textbox 2: {text2}")  # Print the content of the second textbox
-    main(text1)
+    names, emails = read_colleagues()
+    main(text1, names, emails)
 
 # Function to add placeholder text
 def add_placeholder(entry, placeholder):
@@ -45,7 +47,7 @@ def restore_placeholder(entry, placeholder):
 
 # Create the main window
 root = tk.Tk()
-root.title("Calender Buddy")
+root.title("Calendar Buddy")
 root.geometry("500x400")  # Set the window size to 500x500 pixels
 
 icon_path = "icon.png"
@@ -64,7 +66,7 @@ image_label.pack(pady=10)
 
 
 # Create a label above the first textbox with larger font
-label = tk.Label(root, text="Calender Buddy (Staff)", font=("Helvetica", 16))
+label = tk.Label(root, text="Calendar Buddy (Internal)", font=("Helvetica", 16))
 label.pack(pady=1)
 
 label2 = tk.Label(root, text="Add Colleague to Database", font=("Helvetica", 10))
@@ -85,7 +87,7 @@ button = tk.Button(root, text="Enter", command=on_button_click)
 button.pack(pady=10)
 
 
-label3 = tk.Label(root, text="Add Roster to Calenders", font=("Helvetica", 10))
+label3 = tk.Label(root, text="Add Roster to Calendars", font=("Helvetica", 10))
 label3.pack(pady=20)
 
 # Create the first Entry (single-line textbox) with a placeholder

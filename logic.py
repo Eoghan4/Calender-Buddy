@@ -14,7 +14,7 @@ from read_excel import get_row, get_times
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 
-def main(path, name):
+def main(path, names, emails):
   """Shows basic usage of the Google Calendar API.
   Prints the start and name of the next 10 events on the user's calendar.
   """
@@ -43,34 +43,37 @@ def main(path, name):
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat()
     
+    for j in range(0,len(names)):
 
+      row = get_row(path,names[j])
+      dates, start_times, end_times = get_times(path, row)
 
-    row = get_row(path,name)
-    dates, start_times, end_times = get_times(path, row)
+      for i in range(0,len(dates)):
 
-    for i in range(0,len(dates)):
+          start, end = get_time(dates[i],start_times[i],end_times[i])
+      
+          event = {
+              'summary': 'Work',
+              #'location': '800 Howard St., San Francisco, CA 94103',
+              'description': 'Penneys',
+              'start': {
+                  'dateTime': start,
+                  'timeZone': 'GMT+1',
+              },
+              'end': {
+                  'dateTime': end,
+                  'timeZone': 'GMT+1',
+              },
+              'reminders': {
+                  'useDefault': False,
+              },
+              'attendees': [
+                {'email': emails[j]},
+            ],
+          }
 
-        start, end = get_time(dates[i],start_times[i],end_times[i])
-    
-        event = {
-            'summary': 'Work',
-            #'location': '800 Howard St., San Francisco, CA 94103',
-            'description': 'Penneys',
-            'start': {
-                'dateTime': start,
-                'timeZone': 'GMT+1',
-            },
-            'end': {
-                'dateTime': end,
-                'timeZone': 'GMT+1',
-            },
-            'reminders': {
-                'useDefault': False,
-            },
-        }
-
-        #event = service.events().insert(calendarId='primary', body=event).execute()
-        print('Event created: %s' % (event.get('htmlLink')))
+          #event = service.events().insert(calendarId='primary', body=event).execute()
+          print('Event created: %s' % (event.get('htmlLink')))
 
 
   except HttpError as error:
